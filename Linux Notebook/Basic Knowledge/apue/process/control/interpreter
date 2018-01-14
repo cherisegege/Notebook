@@ -1,0 +1,5 @@
+#!/bin/sh
+
+ls -l
+
+cp /etc/passwd .

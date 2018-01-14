@@ -1,0 +1,49 @@
+
+
+
+//父进程终止后子进程终止
+	
+	
+	( fork()== 0) {
+	
+		
+		while (getppid() != 1)
+			;
+		exit(0);
+	}
+
+
+模拟shell
+
+while (1) {
+
+	getline();
+
+	if (strcmp(str, "exit"))	
+		break;
+
+	pid = fork();
+	if (pid == 0) {
+		exec();----> ls
+	}
+
+	wait(NULL);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

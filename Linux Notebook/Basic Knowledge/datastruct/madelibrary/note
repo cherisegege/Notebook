@@ -1,0 +1,24 @@
+
+
+静态库：main.c add.c sub.c mul.c div.c add.h sub.h mul.h div.h
+	<1>gcc -c add.c sub.c mul.c div.c 		
+	<2>ar -cr -o libxxxx.a	*.o
+	<3>gcc -o target main.c -L. -lxxxx
+	-L静态库路径
+	-l静态库的名字
+
+动态库：
+	<1>gcc -fPIC -shared -o libxxxx.so add.c sub.c mul.c div.c 
+		-fPIC与位置无关
+		-shared动态库
+	<2>gcc -o target main.c -L. -lxxxx
+	
+	<3>ldd target
+	查看可执行文件加载的所有动态库的路径是否找到	
+	<4>将动态库路径写进配置文件(/etc/ld.so.conf)
+	<5>ldconfig
+	重新加载配置文件
+	
+
+
+

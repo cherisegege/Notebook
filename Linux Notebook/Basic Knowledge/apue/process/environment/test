@@ -1,0 +1,28 @@
+
+//伪代码
+
+
+fd1 = open();
+if (fd1 < 0) {
+	perror();
+	exit(1);
+}
+atexit(close(fd1));
+
+fd2 = open();
+if (fd2 < 0) {
+	perror();
+	close(fd1);
+	exit(1);
+}
+
+fd3 = open();
+if (fd3 < 0) {
+	perror();
+	close(fd1);
+	close(fd2);
+	exit(1);	
+}
+
+
+

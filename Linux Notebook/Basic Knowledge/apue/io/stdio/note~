@@ -1,0 +1,82 @@
+
+标准io(C库函数)
+
+库函数和系统调用关系：
+	并不是所有的库函数都需要调用系统调用函数,例如memcpy(), memmove()
+
+特点:
+	缓存区(合并系统调用)
+
+补充：
+	errno:全局变量
+	值对应的字符串：/usr/include/asm-generic/errno-base.h
+					/usr/include/asm-generic/errno.h
+	strerror(3); 
+	perror(3);
+
+一.流和FILE结构
+	FILE：结构体类型, 打开一个文件对应FILE结构		
+		  文件描述符
+		  缓存区的地址
+		  缓存区的大小(BUFSIZ 8192)
+		  出错原因
+
+二.缓存
+	系统默认打开三个文件：标准输入(stdin) 标准输出(stdout) 标准错误输出(stderr)	
+	缓存的分类:
+		全缓存:除了与终端关联的文件之外，文件都是全缓存
+		行缓存:stdin stdout
+		无缓存:stderr
+	刷新缓存区:
+			fflush(3);
+	改变缓存区:
+		了解
+			setbuf(3);
+			setvbuf(3);	
+
+note:
+	setvbuf(FILE *stream, char *buf, int mode, size_t size);
+	其中stream指的是要改变缓存的文件流，buf指的是新的缓存的首地址，
+	mode指的是新的缓存模式，size指的是新的缓存大小（其缓存大小只和size关联，并不手册写的那样受buf的大小限制，而且它为了保证字符串的完整，会向上取证，即当空间不够的时候，会为最后一个字符串开辟新的空间来存储完整的字符串，例如：字符串为"hello",size为6（0～6为7个字节），在全缓存的时候空间会自动扩充到10个（0～9），来存储hellohello）
+
+三.流的打开
+	fopen(3);
+	fdopen(3);将系统io转换成标准io
+	fileno(3);将标准io转换成系统io
+
+四.流的操作
+	读/写
+		<1>按字符操作
+			getchar()/putchar();
+			fgetc()/fputc();
+			getc()/putc();
+
+			ferror();
+			feof();
+
+		<2>按行操作
+			gets()/puts();
+			fgets()/fputs();
+
+			getline();
+
+		<3>按结构操作
+			fread()/fwrite();
+			ferror();判断文件操作停止是不是因为错误引起的 
+		        feof(); 判断文件操作停止是不是因为到了文件末尾引起的
+
+		<4>按格式化操作 
+			printf()/scanf();
+			fprintf()/fscanf();
+			sprintf()/sscanf();
+
+五.流的定位
+
+
+六.流的关闭
+	fclose(3);
+
+七.临时文件
+
+
+

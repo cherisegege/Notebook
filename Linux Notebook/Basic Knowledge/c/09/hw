@@ -1,0 +1,17 @@
+
+
+1.模拟终端
+./a.out
+[niux@you]￥add 1 2 
+1+2 = 3
+[niux@you]￥sub 1 2
+1-2 = -1
+
+
+2.定义以下结构体类型的数组,数组中有10个成员,从标准输入读入结构体每一项，将成员成绩及格的打印输出
+struct stu_st {
+	int id;
+	char name[32];
+	int score;	
+};
+
