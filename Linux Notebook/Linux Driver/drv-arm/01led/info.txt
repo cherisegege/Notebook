@@ -1,0 +1,23 @@
+
+led例子1的测试方法：
+$>make
+$>make install
+//应首先修改Makefile
+
+$>adb shell
+//登录开发板，测试灯的例子
+
+root@tiny4412>insmod /system/lib/modules/led_test01.ko
+root@tiny4412>cat /proc/led_info
+//安装模块，通过proc文件获得信息(主次设备号为55,0)
+
+root@tiny4412>mknod /dev/myled c 55 0
+root@tiny4412>echo on0|on1... >/dev/myled
+root@tiny4412>echo off0|off1... >/dev/myled
+//创建设备文件，点亮或熄灭给定的led
+
+
+
+
+
+

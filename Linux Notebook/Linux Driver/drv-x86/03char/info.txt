@@ -1,0 +1,26 @@
+
+char驱动例子的测试方法：
+$>make
+//应首先修改Makefile
+
+$>insmod char_test01.ko
+//加载模块
+
+$>cat /proc/buf_info
+//通过proc文件获取设备信息
+
+$>mknod /dev/mybuf c 50 0
+//根据proc文件中的设备号创建设备文件
+
+$>echo asferee >/dev/mybuf
+$>echo 124243333234 >/dev/mybuf
+//向设备写入数据
+
+$>cat /dev/mybuf
+//从设备读数据
+
+$>rmmod char_test01
+//卸载模块，/proc/buf_info文件没有了，/dev/mybuf还在，但不能访问
+
+
+

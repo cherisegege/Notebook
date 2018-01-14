@@ -1,0 +1,22 @@
+
+0x38
+
+硬件信息和设备结构体放在一起
+
+非热插拔
+platform, i2c, spi (用name成员来表达我是谁)
+
+热插拔：
+usb, pci
+
+全手工：手工准备platform_device，并注册
+
+半自动(i2c/spi)：驱动人员不是直接准备i2c_client，而是准备一个模板结构体i2c_board_info，然后将该模板注册到内核，内核会根据模板的内容，生成i2c_client
+准备并注册模板的操作，必须在内核的初始化时完成；
+
+
+全自动：usb或pci总线会自动生成usb_device或pci_dev
+
+
+
+
