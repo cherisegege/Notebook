@@ -1,0 +1,89 @@
+
+文件和目录
+
+实现ls -l
+-rw-r--r--. 1 root root 3798 7月  28 10:54 /etc/passwd
+一.
+	stat(2);
+	fstat(2);
+	lstat(2);
+
+二.文件类型 (st_mode)
+
+	获取文件类型:
+		switch(st_mode & S_IFMT)
+				case S_IFREG:
+					普通文件;
+		
+		if (S_ISREG(st_mode))
+			普通文件;
+
+	dbc-lsp
+	d:directory
+	b:block
+	c:charater
+	-:regular
+	l:link
+	s:socket
+	p:pipe
+
+三.文件权限 (st_mode)
+	获取文件权限：
+		if (st_mode & S_IRUSR)
+			文件拥有者有读权限;
+	u+s
+	g+s
+	o+t
+	u = rwx
+	g = rwx
+	o = rwx
+
+四.文件的硬链接个数
+	硬链接:
+		在目录项中多一条记录
+		inode号与原文件相同
+		不能跨分区
+	符号链接:	
+		新的文件，存储原文件路径
+		inode号与原文件不同
+		能跨分区
+
+五.用户和组
+	实际用户/组id:登录时确定了
+	有效用户/组id:权限校验	u+s   绝大多数有效用户id==实际用户id
+	保留设置用户/组id		
+
+六.文件的大小
+	文件所含有的字节 不等于 文件所占用的磁盘空间的大小
+	st_size	文件所含有的字节
+	st_blocks 磁盘空间 占用多少扇区(512)
+	磁盘的最小单位是扇区(512byte)	
+	文件系统的最小单位是块(4k)
+
+七.文件的mtime
+	access time	---->atime	最后一次访问的时间
+	modify time ---->mtime	最后一次修改文件数据的时间 (ls -l)
+	change time ---->ctime	最有一次修改文件亚数据(属性)的时间
+
+八.目录
+
+	opendir(3);
+	readdir(3);
+	closedir(3);
+
+	rewinddir(3);
+	telldir(3);
+	seekdir(3);
+
+*	glob(3);
+
+九：补充
+	umask():查看或者设置当前用户的权限掩码
+	    note:只影响当前用户或进程，不影响其他用户，即每个用户或进程都有自己的权限掩码		
+
+
+
+
+
+
+

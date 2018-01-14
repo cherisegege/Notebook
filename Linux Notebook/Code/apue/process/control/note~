@@ -1,0 +1,156 @@
+
+进程控制
+
+一、进程标识符
+	每一个进程都有一个唯一的标识符	
+	类型：pid_t (long int)
+
+	0	系统进程(内核)
+	1	init (所有进程的祖先进程)
+	2	页守护进程
+
+	ps aux	USER PID TTY COMMAND	
+	ps axj  PPID PID PGID SID TTY
+	ps axm  线程
+	ps axf	进程关系
+
+	getpid(2);
+	getppid(2);
+	
+
+二、主角一fork(2)和vfork(2)
+	fork(2)创建的子进程与父进程差别
+		<1>fork()返回值不同
+		<2>pid不同
+		<3>ppid不同
+		<4>资源使用率清空
+		<5>未决信号集清空
+		<6>文件锁不继承
+		<7>未决闹钟不继承
+
+	原则上父进程有义务为子进程收尸的
+
+	进程的类型：
+		孤儿进程：当前进程还没有结束，父进程已经消亡，当前进程称孤儿进程	
+		僵尸进程：当前进程已经消亡，但父进程还没来得及为子进程收尸
+
+	进程状态：
+		D	不可中断的睡眠态
+		S	可中断的睡眠态
+		R	运行态
+		T	停止态
+		Z	僵尸态	
+	进程优先级：
+		<	高优先级
+		N	低优先级
+		l	多线程
+		s	会话的leader		
+		+	前台进程组
+
+	fork()采用写时复制技术(copy-on-write)
+	fork(2)创建子进程的特点：
+		<1>不能保证父子进程哪一个先运行
+		<2>子进程的结束调用exit(3);
+
+	vfork(2);
+
+	fork(2)和vfork(2)的区别：
+		<1>vfork(2)保证创建的子进程会先运行	
+		<2>vfork(2)创建的子进程和父进程共享数据段，fork(2)创建的子进程的数据段采用写时复制	
+		<3>vfork(2)创建的子进程必须使用_exit(2)退出
+
+三、主角二wait(2)和waitpid(2);
+
+多进程任务分配算法：
+	<1>一个任务对应一个进程(进程个数是有限的)
+	<2>分块(缺点，多进程负载不均)
+	<3>交叉分配
+	<4>池类算法
+
+	wait(&status); == waitpid(-1, &status, 0);
+	waitpid()--->pid:
+		<-1:为进程组id和pid的绝对值相等的组内任意一个子进程收尸
+		-1:任意一个子进程
+		0:父进程是组长的组内任意一个子进程
+		>0:为子进程id是pid的进程收尸
+
+四、主角三exec族函数
+	使得进程能够用新的进程环境替换以前的环境	
+	
+linux世界有fork()+exec()+wait();
+
+
+内部命令：shell本身自带的命令
+外部命令：可执行的程序在$PATH
+
+五、竞争条件
+	fork()创建子进程不能保证父子进程哪个先运行
+
+	结合信号
+
+六、更改用户id和组id
+	实际用户id	
+	有效用户id
+	保存设置用户id					
+
+	setuid(2);	
+	getuid(2);
+	geteuid(2);
+
+
+七、解释器文件
+	#!/bin/sh	
+
+八、system(3);
+	fork()+execl("/bin/sh", "sh", "-c", string, NULL)+wait();
+
+九、进程会计
+
+十、进程时间
+	real time	user+sys+调用时间
+	user time	用户态
+	sys  time	内核态
+
+	times(2);
+
+进程关系
+
+会话:每打开一个终端，创建一个会话,由一个或多个进程组组成的集合
+进程组:由一个或者多个进程所构成的集合,前台进程组最多一个，后台进程组不限制
+
+获取/设置进程组id
+getpgrp(2); == getpgid(0);
+getpgid(2);
+setpgid(2);
+
+获取/设置会话id
+getsid(2);
+setsid(2);
+
+守护进程（精灵进程）
+特点：
+	守护进程是进程组leader,会话leader,脱离控制终端
+
+1.umask(0);
+2.fork()-->parent(exit(0))--->child(setsid())
+3.fd = open("/dev/null", );--->dup2(fd, 0);dup2(fd, 1);dup2(fd, 2)
+4.chdir("/");
+
+daemon(3);
+
+系统日志的书写
+	openlog();
+	syslog();
+	closelog();
+
+openlog(name, LOG_LID, LOG_DAEMON);
+syslog(LOG_ERR or LOG_WARNING, "the infomation is %s", strerror(strno));
+closelog();
+
+
+
+
+
+
+
+

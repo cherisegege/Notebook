@@ -1,0 +1,43 @@
+标准io
+
+1.文件
+	打开、读、写、偏移、关闭
+	fopen();
+	fread();
+	fwrite();
+	fseek();
+	rewind();
+	ftell();
+	fclose();
+
+2.缓存区
+	行缓存	stdin stdout    FILE * 类型
+	无缓存	stderr		FILE * 类型						
+	全缓存	文件
+	
+3.
+	fprintf();
+	printf();
+	scanf();
+
+字符:
+	getchar();
+	putchar();
+	fgetc();
+	fputc();
+	getc();
+	putc();
+字符串：
+	gets();
+	puts();
+	fgets();
+	fputs();	
+
+
+
+
+
+
+
+
+
