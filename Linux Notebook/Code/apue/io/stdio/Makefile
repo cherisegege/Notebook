@@ -1,5 +1,0 @@
-CFLAGS+=-D_GNU_SOURCE
-
-
-
-
